@@ -1,28 +1,16 @@
 import Css from "./Options.module.css";
 
-const Options = ({ setFeedback }) => {
-  const updateFeedback = (feedbackType) => {
-setFeedback(prevFeedback => ({
-      ...prevFeedback,
-      [feedbackType]: prevFeedback[feedbackType] + 1
-    }));
-  };
+const Options = ({ setFeedback, resetFeedback, totalFeedback}) => {
 
-  const resetFeedback = () => {
-    setFeedback({
-      good: 0,
-      neutral: 0,
-      bad: 0,
-    })
-  }
   return (
     <div className={Css.buttonList}>
-      <button onClick={() => {updateFeedback("good")}}>Good</button>
-      <button onClick={() => {updateFeedback("neutral")}}>Neutral</button>
-      <button onClick={() => {updateFeedback("bad")}}>Bad</button>
-      <button onClick={resetFeedback}>Reset</button>
+      <button onClick={() => {setFeedback("good")}}>Good</button>
+      <button onClick={() => {setFeedback("neutral")}}>Neutral</button>
+      <button onClick={() => {setFeedback("bad")}}>Bad</button>
+      {totalFeedback > 0 && <button onClick={resetFeedback}>Reset</button>}
     </div>
   );
 };
 
 export default Options;
+

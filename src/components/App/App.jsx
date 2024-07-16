@@ -6,30 +6,40 @@ import { useState, useEffect } from "react";
 
 function App() {
   const [feedback, setFeedback] = useState(() => {
-    
     const savedFeedback = localStorage.getItem("feedback");
-    return savedFeedback ? JSON.parse(savedFeedback) : { good: 0, neutral: 0, bad: 0 };
+    return savedFeedback
+      ? JSON.parse(savedFeedback)
+      : { good: 0, neutral: 0, bad: 0 };
   });
 
-  useEffect(() => {
-    const savedFeedback = localStorage.getItem("feedback");
-    if (savedFeedback) {
-      setFeedback(JSON.parse(savedFeedback));
-    }
-  }, []);
+  console.log(feedback)
 
   const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
   const positive = totalFeedback > 0 ? Math.round((feedback.good / totalFeedback) * 100) : 0;
 
   useEffect(() => {
     localStorage.setItem("feedback", JSON.stringify(feedback));
-    localStorage.setItem("positive", positive);
-  }, [feedback, positive]);
+  }, [feedback]);
+
+  const updateFeedback = (feedbackType) => {
+    setFeedback(prevFeedback => ({
+          ...prevFeedback,
+          [feedbackType]: prevFeedback[feedbackType] + 1
+        }));
+  }
+
+  const resetFeedback = () => {
+    setFeedback({
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    })
+  }
 
   return (
     <div>
       <Description />
-      <Options setFeedback={setFeedback} />
+      <Options setFeedback={updateFeedback} resetFeedback={resetFeedback} totalFeedback={totalFeedback} />
       <Feedback
         feedback={feedback}
         totalFeedback={totalFeedback}
