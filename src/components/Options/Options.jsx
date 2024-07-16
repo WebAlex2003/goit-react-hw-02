@@ -13,4 +13,3 @@ const Options = ({ setFeedback, resetFeedback, totalFeedback}) => {
 };
 
 export default Options;
-
